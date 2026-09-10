@@ -28,6 +28,7 @@ public class MovieDateService {
     }
 
     public List<MovieDateDto> getMovieByDate(Integer month, Integer day) {
+        log.info("Getting movies by date [month={}, day={}]", month, day);
         List<MovieDate> movieDates = movieRepository.findByMonthAndDay(month, day);
 
         return movieDates.stream().map(movie -> {
