@@ -30,8 +30,24 @@ export const TodayInMovies = () => {
     const month = value ? Number(value.split("-")[1]) : null;
     const day = value ? Number(value.split("-")[2]) : null;
 
-    requestDate(`https://seal-app-x2cd7.ondigitalocean.app/movie-date?month=${month}&day=${day}`);
+    requestDate(
+      `https://seal-app-x2cd7.ondigitalocean.app/movie-date?month=${month}&day=${day}`,
+    );
   };
+
+  const date = postResponse.data?.[0].date;
+
+  const formattedDate = date
+    ? (() => {
+        const [year, month, day] = date.split("-");
+
+        return new Intl.DateTimeFormat("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+        }).format(new Date(Number(year), Number(month) - 1, Number(day)));
+      })()
+    : null;
 
   return (
     <Container>
@@ -85,12 +101,7 @@ export const TodayInMovies = () => {
           {postResponse.data?.[0].movie}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 4 }}>
-          {postResponse.data?.[0].date &&
-            new Date(postResponse.data?.[0].date).toLocaleString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+          {postResponse.data?.[0].date && formattedDate}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 3 }}>
           {postResponse.data?.[0].description}
