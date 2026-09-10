@@ -13,7 +13,7 @@ interface MovieDate {
 
 export const TodayInMovies = () => {
   const [getResponse] = useAxios<MovieDate[]>(
-    "http://localhost:8080/movie-dates",
+    "https://seal-app-x2cd7.ondigitalocean.app/movie-dates",
   );
 
   const [postResponse, requestDate] = useAxios<MovieDate[]>(
@@ -30,7 +30,7 @@ export const TodayInMovies = () => {
     const month = value ? Number(value.split("-")[1]) : null;
     const day = value ? Number(value.split("-")[2]) : null;
 
-    requestDate(`http://localhost:8080/movie-date?month=${month}&day=${day}`);
+    requestDate(`https://seal-app-x2cd7.ondigitalocean.app/movie-date?month=${month}&day=${day}`);
   };
 
   return (
