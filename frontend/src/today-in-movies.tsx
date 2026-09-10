@@ -11,14 +11,24 @@ interface MovieDate {
   description: string;
 }
 
+const formatDate = (date: string) => {
+  const [year, month, day] = date.split("-");
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(Number(year), Number(month) - 1, Number(day)));
+};
+
 export const TodayInMovies = () => {
-  const [getResponse] = useAxios<MovieDate[]>(
-    "https://seal-app-x2cd7.ondigitalocean.app/movie-dates",
-  );
+  const [todayResponse] = useAxios<MovieDate[]>({
+    url: `https://seal-app-x2cd7.ondigitalocean.app/movie-date?month=${new Date().getMonth() + 1}&day=${new Date().getDate()}`,
+    method: "GET",
+  });
 
   const [postResponse, requestDate] = useAxios<MovieDate[]>(
     {
-      url: "http://localhost:8080/",
       method: "GET",
     },
     { manual: true },
@@ -35,20 +45,6 @@ export const TodayInMovies = () => {
     );
   };
 
-  const date = postResponse.data?.[0].date;
-
-  const formattedDate = date
-    ? (() => {
-        const [year, month, day] = date.split("-");
-
-        return new Intl.DateTimeFormat("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        }).format(new Date(Number(year), Number(month) - 1, Number(day)));
-      })()
-    : null;
-
   return (
     <Container>
       <Grid>
@@ -62,18 +58,14 @@ export const TodayInMovies = () => {
           })}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 8 }}>
-          {getResponse.data?.[0].movie}
+          {todayResponse.data?.[0].movie}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 4 }}>
-          {getResponse.data?.[0].date &&
-            new Date(getResponse.data?.[0].date).toLocaleString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
+          {todayResponse.data?.[0].date &&
+            formatDate(todayResponse.data?.[0].date)}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 3 }}>
-          {getResponse.data?.[0].description}
+          {todayResponse.data?.[0].description}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 3 }}>{child}</Grid.Col>
         <Grid.Col span={{ base: 12, xs: 6 }}>{child}</Grid.Col>
@@ -101,7 +93,8 @@ export const TodayInMovies = () => {
           {postResponse.data?.[0].movie}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 4 }}>
-          {postResponse.data?.[0].date && formattedDate}
+          {postResponse.data?.[0].date &&
+            formatDate(postResponse.data?.[0].date)}
         </Grid.Col>
         <Grid.Col span={{ base: 12, xs: 3 }}>
           {postResponse.data?.[0].description}
