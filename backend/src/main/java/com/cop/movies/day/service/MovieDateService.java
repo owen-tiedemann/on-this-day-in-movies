@@ -31,6 +31,12 @@ public class MovieDateService {
         log.info("Getting movies by date [month={}, day={}]", month, day);
         List<MovieDate> movieDates = movieRepository.findByMonthAndDay(month, day);
 
+        if (movieDates.size() > 0) {
+            MovieDate movieDate = movieDates.getFirst();
+
+            log.info("Date retrieved {}", movieDate.getDate());
+        }
+
         return movieDates.stream().map(movie -> {
             return MovieDateDto.builder().date(movie.getDate()).description(movie.getDescription())
                     .movie(movie.getMovie()).build();
