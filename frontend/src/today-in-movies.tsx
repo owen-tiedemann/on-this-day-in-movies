@@ -250,11 +250,27 @@ export const TodayInMovies = () => {
               <SkeletonBlock falling={falling} delay={10} />
             </Grid.Col>
             <Grid.Col span={{ base: 12, xs: 3 }}>
-              <FallingTextBlock falling={falling} delay={0}>
-                <Button onClick={() => handleGo()}>
-                  What's with all the squares?
-                </Button>
-              </FallingTextBlock>
+              <Marquee duration={200}>
+                <FallingTextBlock falling={falling} delay={0}>
+                  <Button onClick={() => handleGo()}>
+                    What's with all the squares?
+                  </Button>
+                </FallingTextBlock>
+              </Marquee>
+              <Marquee duration={400}>
+                <FallingTextBlock falling={falling} delay={0}>
+                  <Button onClick={() => handleGo()}>
+                    What's with all the squares?
+                  </Button>
+                </FallingTextBlock>
+              </Marquee>
+              <Marquee duration={800}>
+                <FallingTextBlock falling={falling} delay={0}>
+                  <Button onClick={() => handleGo()}>
+                    What's with all the squares?
+                  </Button>
+                </FallingTextBlock>
+              </Marquee>
             </Grid.Col>
             <Grid.Col span={{ base: 12, xs: 6 }}>
               <SkeletonBlock falling={falling} delay={0} />
